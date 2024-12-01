@@ -7,6 +7,7 @@ from player import *
 from queen import *
 from rook import *
 import copy
+import ast
 
 
 class Game:
@@ -20,6 +21,7 @@ class Game:
         self.gameOver = False
         self.winner = None
         self.findLegalMoves()
+        self.run()
 
     def printBoard(self):
         print(pd.DataFrame(self.board))
@@ -211,9 +213,19 @@ class Game:
                 self.winner = self.players[1]
             else:
                 self.winner = self.players[0]
+    
+    def chooseMove(self):
+        both = input("piece, move")
+        splitted = both.split()
+        return splitted[0], ast.literal_eval(splitted[1])
+    
+    def run(self):
+        while self.gameOver == False:
+            piece, move = self.chooseMove()
+            self.makeMove(piece, move)
 
 
-# A = Game(Player(1), Player(2))
+A = Game(Player(1), Player(2))
 # A.makeMove("wp5", (4, 4))
 # A.makeMove("bp4", (3, 3))
 # A.makeMove("wp5", (3, 4))
