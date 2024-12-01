@@ -19,6 +19,10 @@ def onAppStart(app):
             else:
                 app.board[i][j] = ["black"]
     app.inGame = False
+    Game = Game(Player(1), Player(2))
+    for row in range(0, 8):
+        for col in range(0, 8):
+            app.board[row][col].append(Game.board[row][col])
 
     
 def redrawAll(app):
@@ -55,7 +59,5 @@ def getCellLeftTop(app, row, col):
 
 def main():
     runApp()
-
-
 
 main()

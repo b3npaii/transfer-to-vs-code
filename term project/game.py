@@ -225,7 +225,7 @@ class Game:
             self.makeMove(piece, move)
 
 
-A = Game(Player(1), Player(2))
+# A = Game(Player(1), Player(2))
 # A.makeMove("wp5", (4, 4))
 # A.makeMove("bp4", (3, 3))
 # A.makeMove("wp5", (3, 4))
