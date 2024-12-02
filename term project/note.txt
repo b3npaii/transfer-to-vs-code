@@ -1,0 +1,4 @@
+I would like to say that I used a lot of code from a previous project I did, which was a connect 4 heuristic minimax player, which is why some 
+of the code is in camel case and some of it is in snake case. 
+Also i know the loops are kinda inconsistent with syntax (for i in range() vs for row in range()) and thats just because i couldnt be bothered to keep it 
+consistent

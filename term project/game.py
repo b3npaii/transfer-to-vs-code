@@ -6,8 +6,8 @@ from pawn import *
 from player import *
 from queen import *
 from rook import *
+from minimaxPlayer import *
 import copy
-import ast
 
 
 class Game:
@@ -35,47 +35,45 @@ class Game:
         return board
 
     def makeMove(self, piece, move, check=True):
-        if not self.gameOver:
-            if piece in self.legalMoves and move in self.legalMoves[piece]:
-                #make sure the move is legal
-                #special case for castling
-                if move == "castleShort" and not self.checkCheck():
-                    if self.turn == 1:
-                        self.board[7][6] = "wk"
-                        self.board[7][5] = "wr2"
-                        self.board[7][7] = self.board[7][4] = 0
-                    else:
-                        self.board[0][6] = "bk"
-                        self.board[0][5] = "br2"
-                        self.board[0][7] = self.board[0][4] = 0
-                elif move == "castleLong" and not self.checkCheck():
-                    if self.turn == 1:
-                        self.board[7][2] = "wk"
-                        self.board[7][3] = "wr1"
-                        self.board[7][0] = self.board[7][4] = 0
-                    else:
-                        self.board[0][2] = "wk"
-                        self.board[0][3] = "wr1"
-                        self.board[0][0] = self.board[0][4] = 0
-                elif "wp" in piece and move[0] == 0:
-                    self.promoteWhitePawn(piece, move)
-                elif "bp" in piece and move[0] == 7:
-                    self.promoteBlackPawn(piece, move)
+        if piece in self.legalMoves and move in self.legalMoves[piece]:
+            #make sure the move is legal
+            #special case for castling
+            if move == "castleShort" and not self.checkCheck():
+                if self.turn == 1:
+                    self.board[7][6] = "wk"
+                    self.board[7][5] = "wr2"
+                    self.board[7][7] = self.board[7][4] = 0
                 else:
-                    #put the piece on the new spot and take it off the old one
-                    oldRow, oldCol = self.findPiece(piece)
-                    newRow, newCol = move
-                    self.board[newRow][newCol] = piece
-                    self.board[oldRow][oldCol] = 0
-                if self.log == True:
-                    self.printBoard()
-                if "k" in piece:
-                    self.players[self.turn - 1].kingMoved = True
-                self.turn += 1
-                if self.turn == 3:
-                    self.turn = 1
-                self.findLegalMoves(check)
+                    self.board[0][6] = "bk"
+                    self.board[0][5] = "br2"
+                    self.board[0][7] = self.board[0][4] = 0
+            elif move == "castleLong" and not self.checkCheck():
+                if self.turn == 1:
+                    self.board[7][2] = "wk"
+                    self.board[7][3] = "wr1"
+                    self.board[7][0] = self.board[7][4] = 0
+                else:
+                    self.board[0][2] = "wk"
+                    self.board[0][3] = "wr1"
+                    self.board[0][0] = self.board[0][4] = 0
+            elif "wp" in piece and move[0] == 0:
+                self.promoteWhitePawn(piece, move)
+            elif "bp" in piece and move[0] == 7:
+                self.promoteBlackPawn(piece, move)
             else:
+                #put the piece on the new spot and take it off the old one
+                oldRow, oldCol = self.findPiece(piece)
+                newRow, newCol = move
+                self.board[newRow][newCol] = piece
+                self.board[oldRow][oldCol] = 0
+            if self.log == True:
+                self.printBoard()
+            self.turn = [2, 1][self.turn - 1]
+            if "k" in piece:
+                self.players[self.turn - 1].kingMoved = True
+            self.findLegalMoves(check)
+        else:
+            if self.log:
                 print("That's not a legal move! Try again.")
 
     def promoteWhitePawn(self, oldPiece, move):
@@ -130,9 +128,7 @@ class Game:
 
     def checkCheck(self):
         altMoves = {}
-        otherPlayer = self.turn + 1
-        if otherPlayer == 3:
-            otherPlayer = 1
+        otherPlayer = [2, 1][self.turn - 1]
         altMoves.update(pawnMoves(self.board, otherPlayer))
         altMoves.update(knightMoves(self.board, otherPlayer))
         altMoves.update(bishopMoves(self.board, otherPlayer))
@@ -170,9 +166,8 @@ class Game:
             self.legalMovesInCheck()
         self.checkGameOver()
         if self.gameOver:
-            print("The game is over! The winner is ", end="")
-            print(self.winner)
-        if self.log == True and not self.gameOver:
+            print("the game is over!")
+        if self.log:
            print(self.legalMoves)
 
     def legalMovesInCheck(self):
@@ -186,22 +181,24 @@ class Game:
                     move = copiedMoves[piece][i]
                     #if still in check after the move, take it out of legal moves
                     #save state the board and revert after checking
-                    newGame = Game(self.players[0], self.players[1], False)
-                    #need to make them copies or else it changes copiedBoard, etc (i forgot this and was stuck on this for an hour)
-                    newGame.board = copy.deepcopy(copiedBoard)
-                    newGame.legalMoves = copiedMoves.copy()
-                    newGame.turn = int(str(turn))
-                    newGame.makeMove(piece, move, False)
+                    self.makeMove(piece, move, False)
                     newMoves = []
                     triggered = False
-                    for newPiece in newGame.legalMoves:
-                        newMoves += newGame.legalMoves[newPiece]
+                    for newPiece in self.legalMoves:
+                        newMoves += self.legalMoves[newPiece]
                     for x, y in newMoves:
-                        if newGame.board[x][y] != 0 and "k" in newGame.board[x][y]:
+                        if self.board[x][y] != 0 and "k" in self.board[x][y]:
                             copiedMoves[piece].remove(move)
                             triggered = True
                     if not triggered:
                         i += 1
+                    #need to make them copies or else it changes copiedBoard, etc (i forgot this and was stuck on this for an hour)
+                    self.legalMoves = copiedMoves.copy()
+                    self.board = copy.deepcopy(copiedBoard)
+                    self.turn = turn
+        self.legalMoves = copiedMoves
+        self.board = copiedBoard
+        self.turn = turn
 
     def checkGameOver(self):
         allMoves = []
@@ -213,25 +210,16 @@ class Game:
                 self.winner = self.players[1]
             else:
                 self.winner = self.players[0]
-    
+            print("The game is over! The winner is ", end="")
+            print(self.winner)
+
+
     def chooseMove(self):
-        both = input("piece, move")
-        splitted = both.split()
-        return splitted[0], ast.literal_eval(splitted[1])
+        pieceAndMove = self.players[self.turn - 1].chooseMove(self.board)
+        splitted = pieceAndMove.split()
+        return splitted[0], tuple([int(splitted[1]), int(splitted[2])])
     
     def run(self):
-        while self.gameOver == False:
+        while not self.gameOver:
             piece, move = self.chooseMove()
             self.makeMove(piece, move)
-
-
-# A = Game(Player(1), Player(2))
-# A.makeMove("wp5", (4, 4))
-# A.makeMove("bp4", (3, 3))
-# A.makeMove("wp5", (3, 4))
-# A.makeMove("bp4", (4, 3))
-# A.makeMove("wp5", (2, 4))
-# A.makeMove("bp4", (5, 3))
-# A.makeMove("wp5", (1, 5))
-# A.makeMove("bk", (1, 3))
-# A.makeMove("wp5", (0, 6))
