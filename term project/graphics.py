@@ -1,5 +1,6 @@
 from cmu_graphics import *
 from game import *
+from minimaxPlayer import *
 
 def onAppStart(app):
     app.width = 500
@@ -19,10 +20,10 @@ def onAppStart(app):
             else:
                 app.board[i][j] = ["black"]
     app.inGame = False
-    Game = Game(Player(1), Player(2))
+    newGame = Game(ManualPlayer(1), ManualPlayer(2))
     for row in range(0, 8):
         for col in range(0, 8):
-            app.board[row][col].append(Game.board[row][col])
+            app.board[row][col].append(newGame.board[row][col])
 
     
 def redrawAll(app):

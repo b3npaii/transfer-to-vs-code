@@ -1,9 +1,9 @@
 def kingMoves(board, turn, moved):
     if turn == 1:
+        moves = []
         for row in range(0, 8):
             for col in range(0, 8):
                 if board[row][col] == "wk":
-                    moves = []
                     if row - 1 in range(0, 8):
                         #check above the king
                         if col - 1 in range(0, 8):
@@ -39,10 +39,10 @@ def kingMoves(board, turn, moved):
                             moves.append("castleLong")
         return {"wk": moves}
     elif turn == 2:
+        moves = []
         for row in range(0, 8):
             for col in range(0, 8):
                 if board[row][col] == "bk":
-                    moves = []
                     if row - 1 in range(0, 8):
                         if col - 1 in range(0, 8):
                             if board[row - 1][col - 1] == 0 or board[row - 1][col - 1][0] == "w":
