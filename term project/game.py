@@ -140,14 +140,14 @@ class Game:
             allAltMoves += altMoves[piece]
         for i in range(0, len(allAltMoves)):
             if type(allAltMoves[i]) == tuple:
-                for x, y in allAltMoves:
-                    if self.board[x][y] != 0 and "k" in self.board[x][y]:
-                        if self.turn == 1:
-                            if self.board[x][y] == "wk":
-                                return True
-                        else:
-                            if self.board[x][y] == "bk":
-                                return True
+                x, y = allAltMoves[i]
+                if self.board[x][y] != 0 and "k" in self.board[x][y]:
+                    if self.turn == 1:
+                        if self.board[x][y] == "wk":
+                            return True
+                    else:
+                        if self.board[x][y] == "bk":
+                            return True
         return False
 
     def findLegalMoves(self, check=True):
