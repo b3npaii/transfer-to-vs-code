@@ -193,7 +193,7 @@ class ChessTree:
                 if self.turn == 1:
                     board[7][6] = "wk"
                     board[7][5] = "wr2"
-                    self.board[7][7] = board[7][4] = 0
+                    board[7][7] = board[7][4] = 0
                 else:
                     board[0][6] = "bk"
                     board[0][5] = "br2"
