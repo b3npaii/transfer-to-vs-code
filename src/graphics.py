@@ -32,10 +32,17 @@ def reset(app):
     app.selectedPiece = None
     app.gameOver = False
     app.computerPlays = False
+    app.currentMoves = []
     
 def redrawAll(app):
     drawBoard(app)
     drawBoardBorder(app)
+    for x, y in app.currentMoves:
+        drawCircleOnSquare(app, x, y)
+
+def drawCircleOnSquare(app, row, col):
+    x, y = getCellLeftTop(app, row, col)
+    drawCircle(x + 35, y + 35, 15, fill="yellow")
 
 def drawBoard(app):
     if app.inGame:
@@ -120,7 +127,7 @@ def getCellLeftTop(app, row, col):
 
 def findCellCenter(app, row, col):
     x, y = getCellLeftTop(app, row, col)
-    return x + 25, y + 25
+    return x + 35, y + 35
 
 def onMousePress(app, mouseX, mouseY):
     if app.inGame:
@@ -132,9 +139,11 @@ def onMousePress(app, mouseX, mouseY):
                     if app.newGame.turn == 1:
                         if type(app.newGame.board[row][col]) == str and app.newGame.board[row][col][0] == "w":
                             app.selectedPiece = app.newGame.board[row][col]
+                            showLegalMoves(app)
                     else:
                         if type(app.newGame.board[row][col]) == str and app.newGame.board[row][col][0] == "b":
                             app.selectedPiece = app.newGame.board[row][col]
+                            showLegalMoves(app)
                 elif app.selectedPiece != None:
                     app.newGame.makeMove(app.selectedPiece, (row, col))
                     updateBoard(app)
@@ -143,6 +152,7 @@ def onMousePress(app, mouseX, mouseY):
                         if app.newGame.turn == 1:
                             run(app)
                             updateBoard(app)
+                    app.currentMoves = []
         else:
             app.selectedPiece = None
     else:
@@ -157,7 +167,10 @@ def onMousePress(app, mouseX, mouseY):
                 app.inGame = True
                 app.newGame = Game(ManualPlayer(1), ManualPlayer(2))
     #need to implement castling here
-    #show legal moves for a piece
+    #show legal moves for a piece  
+
+def showLegalMoves(app):
+    app.currentMoves = app.newGame.legalMoves[app.selectedPiece]
 
 def run(app):
     if app.computerPlays:
