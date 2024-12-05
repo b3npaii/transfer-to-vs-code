@@ -54,6 +54,7 @@ def drawBoard(app):
         drawLabel("Play vs Computer", 330, 225)
         drawRect(205, 300, 250, 50, fill=None, border="black")
         drawLabel("Play vs Human", 330, 325)
+        drawLabel("Please note, auto-queen is on for promotion, as I need to figure that out later", 330, 400)
     if app.newGame.winner != None:
         drawGameOver(app)
 
@@ -71,6 +72,18 @@ def drawPiece(app, row, col, piece):
         drawImage(app.whiteKing, x, y)
     elif "wq" in piece:
         drawImage(app.whiteQueen, x, y)
+    elif "bp" in piece:
+        drawImage(app.blackPawn, x, y)
+    elif "bn" in piece:
+        drawImage(app.blackKnight, x, y)
+    elif "bb" in piece:
+        drawImage(app.blackBishop, x, y)
+    elif "br" in piece:
+        drawImage(app.blackRook, x, y)
+    elif "bq" in piece:
+        drawImage(app.blackQueen, x, y)
+    elif "bk" in piece:
+        drawImage(app.blackKing, x, y)
 
 def loadImages(app):
     app.whitePawn = CMUImage(Image.open("white_pawn.png"))
@@ -79,6 +92,12 @@ def loadImages(app):
     app.whiteRook = CMUImage(Image.open("white_rook.png"))
     app.whiteKing = CMUImage(Image.open("white_king.png"))
     app.whiteQueen = CMUImage(Image.open("white_queen.png"))
+    app.blackPawn = CMUImage(Image.open("black_pawn.png"))
+    app.blackKnight = CMUImage(Image.open("black_knight.png"))
+    app.blackBishop = CMUImage(Image.open("black_bishop.png"))
+    app.blackRook = CMUImage(Image.open("black_rook.png"))
+    app.blackQueen = CMUImage(Image.open("black_queen.png"))
+    app.blackKing = CMUImage(Image.open("black_king.png"))
 
 def drawBoardBorder(app):
   # draw the board outline (with double-thickness):

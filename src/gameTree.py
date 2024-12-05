@@ -208,9 +208,9 @@ class ChessTree:
                     board[0][3] = "wr1"
                     board[0][0] = board[0][4] = 0
             elif "wp" in piece and move[0] == 0:
-                self.promoteWhitePawn(piece, move)
+                self.promoteWhitePawn(board, piece, move)
             elif "bp" in piece and move[0] == 7:
-                self.promoteBlackPawn(piece, move)
+                self.promoteBlackPawn(board, piece, move)
             else:
                 #put the piece on the new spot and take it off the old one
                 oldRow, oldCol = self.findPiece(piece, board)
@@ -267,33 +267,33 @@ class ChessTree:
             self.next = 1
         self.cycles += 1
 
-    def promoteBlackPawn(self, oldPiece, move):
+    def promoteBlackPawn(self, board, oldPiece, move):
         newPiece = "bq"
         counter = 0
         for row in range(0, 8):
             for col in range(0, 8):
-                if self.board[row][col] != 0 and newPiece in self.board[row][col]:
+                if board[row][col] != 0 and newPiece in board[row][col]:
                     counter += 1
-        oldRow, oldCol = self.findPiece(oldPiece)
+        oldRow, oldCol = self.findPiece(oldPiece, board)
         newRow, newCol = move
         if counter > 0:
             newPiece += str(counter + 1)
-        self.board[newRow][newCol] = newPiece
-        self.board[oldRow][oldCol] = 0
+        board[newRow][newCol] = newPiece
+        board[oldRow][oldCol] = 0
     
-    def promoteWhitePawn(self, oldPiece, move):
+    def promoteWhitePawn(self, board, oldPiece, move):
         newPiece = "wq"
         counter = 0
         for row in range(0, 8):
             for col in range(0, 8):
-                if self.board[row][col] != 0 and newPiece in self.board[row][col]:
+                if board[row][col] != 0 and newPiece in board[row][col]:
                     counter += 1
-        oldRow, oldCol = self.findPiece(oldPiece)
+        oldRow, oldCol = self.findPiece(oldPiece, board)
         newRow, newCol = move
         if counter > 0:
             newPiece += str(counter + 1)
-        self.board[newRow][newCol] = newPiece
-        self.board[oldRow][oldCol] = 0
+        board[newRow][newCol] = newPiece
+        board[oldRow][oldCol] = 0
 
     def assignMinimaxValues(self, node):
 

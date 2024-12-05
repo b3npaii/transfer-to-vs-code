@@ -65,26 +65,18 @@ class Game:
                 newRow, newCol = move
                 self.board[newRow][newCol] = piece
                 self.board[oldRow][oldCol] = 0
-            if self.log == True:
-                self.printBoard()
             self.turn = [2, 1][self.turn - 1]
             if "k" in piece:
                 self.players[self.turn - 1].kingMoved = True
+            if self.log == True:
+                self.printBoard()
             self.findLegalMoves(check)
         else:
             if self.log:
                 print("That's not a legal move! Try again.")
 
     def promoteWhitePawn(self, oldPiece, move):
-        promoted = input("queen, knight, rook, or bishop?")
-        if promoted == "queen":
-            newPiece = "wq"
-        elif promoted == "knight":
-            newpiece = "wn"
-        elif promoted == "rook":
-            newPiece = "wr"
-        elif promoted == "bishop":
-            newPiece = "wb"
+        newPiece = "wq"
         counter = 0
         for row in range(0, 8):
             for col in range(0, 8):
@@ -98,15 +90,7 @@ class Game:
         self.board[oldRow][oldCol] = 0
 
     def promoteBlackPawn(self, oldPiece, move):
-        promoted = input("queen, knight, rook, or bishop?")
-        if promoted == "queen":
-            newPiece = "bq"
-        elif promoted == "knight":
-            newpiece = "bn"
-        elif promoted == "rook":
-            newPiece = "br"
-        elif promoted == "bishop":
-            newPiece = "bb"
+        newPiece = "bq"
         counter = 0
         for row in range(0, 8):
             for col in range(0, 8):
@@ -195,7 +179,7 @@ class Game:
                     #need to make them copies or else it changes copiedBoard, etc (i forgot this and was stuck on this for an hour)
                     self.legalMoves = copiedMoves.copy()
                     self.board = copy.deepcopy(copiedBoard)
-                    self.turn = turn
+                    self.turn = int(str(turn))
         self.legalMoves = copiedMoves
         self.board = copiedBoard
         self.turn = turn
