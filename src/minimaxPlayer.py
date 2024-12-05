@@ -47,7 +47,8 @@ class MinimaxPlayer:
         for i in range(0, 8):
             for j in range(0, 8):
                 if board[i][j] != board_with_best_move[i][j]:
-                    return board_with_best_move[i][j] + f" {i} {j}"
+                    if type(board_with_best_move[i][j]) == str:
+                        return board_with_best_move[i][j] + f" {i} {j}"
 
 class ManualPlayer:
     def __init__(self, turn):

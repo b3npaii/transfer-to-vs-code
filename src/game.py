@@ -21,7 +21,6 @@ class Game:
         self.gameOver = False
         self.winner = None
         self.findLegalMoves()
-        self.run()
 
     def printBoard(self):
         print(pd.DataFrame(self.board))
@@ -167,9 +166,7 @@ class Game:
         if check:
             self.legalMovesInCheck()
         self.checkGameOver()
-        if self.gameOver:
-            print("the game is over!")
-        if self.log:
+        if self.log and not self.gameOver:
            print(self.legalMoves)
 
     def legalMovesInCheck(self):
@@ -216,13 +213,8 @@ class Game:
             print("The game is over! The winner is ", end="")
             print(self.winner)
 
-
     def chooseMove(self):
         pieceAndMove = self.players[self.turn - 1].chooseMove(self.board)
         splitted = pieceAndMove.split()
         return splitted[0], tuple([int(splitted[1]), int(splitted[2])])
     
-    def run(self):
-        while not self.gameOver:
-            piece, move = self.chooseMove()
-            self.makeMove(piece, move)

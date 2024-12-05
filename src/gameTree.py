@@ -267,6 +267,34 @@ class ChessTree:
             self.next = 1
         self.cycles += 1
 
+    def promoteBlackPawn(self, oldPiece, move):
+        newPiece = "bq"
+        counter = 0
+        for row in range(0, 8):
+            for col in range(0, 8):
+                if self.board[row][col] != 0 and newPiece in self.board[row][col]:
+                    counter += 1
+        oldRow, oldCol = self.findPiece(oldPiece)
+        newRow, newCol = move
+        if counter > 0:
+            newPiece += str(counter + 1)
+        self.board[newRow][newCol] = newPiece
+        self.board[oldRow][oldCol] = 0
+    
+    def promoteWhitePawn(self, oldPiece, move):
+        newPiece = "wq"
+        counter = 0
+        for row in range(0, 8):
+            for col in range(0, 8):
+                if self.board[row][col] != 0 and newPiece in self.board[row][col]:
+                    counter += 1
+        oldRow, oldCol = self.findPiece(oldPiece)
+        newRow, newCol = move
+        if counter > 0:
+            newPiece += str(counter + 1)
+        self.board[newRow][newCol] = newPiece
+        self.board[oldRow][oldCol] = 0
+
     def assignMinimaxValues(self, node):
 
         if node.children == []:
