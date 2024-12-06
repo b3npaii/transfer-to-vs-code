@@ -64,9 +64,9 @@ class Game:
                 newRow, newCol = move
                 self.board[newRow][newCol] = piece
                 self.board[oldRow][oldCol] = 0
-            self.turn = [2, 1][self.turn - 1]
             if "k" in piece:
                 self.players[self.turn - 1].kingMoved = True
+            self.turn = [2, 1][self.turn - 1]
             if self.log == True:
                 self.printBoard()
             self.findLegalMoves(check)
@@ -167,7 +167,9 @@ class Game:
                     newMoves = []
                     triggered = False
                     for newPiece in self.legalMoves:
-                        newMoves += self.legalMoves[newPiece]
+                        for move in self.legalMoves[newPiece]:
+                            if type(move) == tuple:
+                                newMoves.append(move)
                     for x, y in newMoves:
                         if self.board[x][y] != 0 and "k" in self.board[x][y]:
                             if move in copiedMoves[piece]:
@@ -193,11 +195,11 @@ class Game:
                 self.winner = self.players[1]
             else:
                 self.winner = self.players[0]
-            print("The game is over! The winner is ", end="")
-            print(self.winner)
+            # print("The game is over! The winner is ", end="")
+            # print(self.winner)
 
     def chooseMove(self):
         pieceAndMove = self.players[self.turn - 1].chooseMove(self.board)
         splitted = pieceAndMove.split()
         return splitted[0], tuple([int(splitted[1]), int(splitted[2])])
-    
+

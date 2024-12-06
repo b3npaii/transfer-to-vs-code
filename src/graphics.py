@@ -145,7 +145,17 @@ def onMousePress(app, mouseX, mouseY):
                             app.selectedPiece = app.newGame.board[row][col]
                             showLegalMoves(app)
                 elif app.selectedPiece != None:
-                    app.newGame.makeMove(app.selectedPiece, (row, col))
+                    if "k" in app.selectedPiece:
+                        x, y = app.newGame.findPiece(app.selectedPiece)
+                        if abs(y - col) == 2:
+                            if y > col:
+                                app.newGame.makeMove(app.selectedPiece, "castleLong")
+                            else:
+                                app.newGame.makeMove(app.selectedPiece, "castleShort")
+                        else:
+                            app.newGame.makeMove(app.selectedPiece, (row, col))
+                    else:
+                        app.newGame.makeMove(app.selectedPiece, (row, col))
                     updateBoard(app)
                     app.selectedPiece = None
                     if app.computerPlays:
@@ -170,7 +180,23 @@ def onMousePress(app, mouseX, mouseY):
     #need to fix bugs with being in check
 
 def showLegalMoves(app):
-    app.currentMoves = app.newGame.legalMoves[app.selectedPiece]
+    app.currentMoves = copy.copy(app.newGame.legalMoves[app.selectedPiece])
+    if "k" in app.selectedPiece:
+        for i in range(0, len(app.currentMoves)):
+            move = app.currentMoves[i]
+            if "castle" in move:
+                if move == "castleShort":
+                    app.currentMoves.pop(i)
+                    if app.newGame.turn == 1:
+                        app.currentMoves.append((7, 6))
+                    else:
+                        app.currentMoves.append((0, 6))
+                elif move == "castleLong":
+                    app.currentMoves.pop(i)
+                    if app.newGame.turn == 1:
+                        app.currentMoves.append((7, 2))
+                    else:
+                        app.currentMoves.append((0, 2))
 
 def run(app):
     if app.computerPlays:

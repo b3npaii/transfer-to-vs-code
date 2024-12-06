@@ -62,14 +62,14 @@ def kingMoves(board, turn, moved):
                                 moves.append((row + 1, col + 1))
                     if col + 1 in range(0, 8):
                         if board[row][col + 1] == 0 or board[row][col + 1][0] == "w":
-                            moves.append((row + 1, col))
+                            moves.append((row, col + 1))
                     if col - 1 in range(0, 8):
                         if board[row][col - 1] == 0 or board[row][col - 1][0] == "w":
                             moves.append((row, col - 1))
                     if moved == False:
-                        if board[0][5] == 0 and board[0][6] == 0 and board[0][7] == "wr2":
+                        if board[0][5] == 0 and board[0][6] == 0 and board[0][7] == "br2":
                             moves.append("castleShort")
-                        if board[0][0] == "wr1" and board[0][1] == 0 and board[0][2] == 0 and board[0][3] == 0:
+                        if board[0][0] == "br1" and board[0][1] == 0 and board[0][2] == 0 and board[0][3] == 0:
                             moves.append("castleLong")
         return {"bk": moves}
 
