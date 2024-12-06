@@ -49,6 +49,7 @@ class Node:
         king = kingMoves(self.board, self.turn, False)
         self.legalMoves.update(king)
         self.checkLegalMovesInCheck()
+        self.checkGameOver()
     
     def checkLegalMovesInCheck(self):
         newGame = Game(Player(1), Player(2), log=False)
@@ -62,7 +63,6 @@ class Node:
         for piece in self.legalMoves:
             allMoves += self.legalMoves[piece]
         if allMoves == []:
-            self.gameOver = True
             if self.turn == 1:
                 self.winner = 2
             else:
