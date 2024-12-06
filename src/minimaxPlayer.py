@@ -20,7 +20,7 @@ class MinimaxPlayer:
             minimax_values_of_children[tupled_child] = child.minimaxValue
 #get a dictionary of all of the minimax values of the children with the board as the key^
 
-        if current_board_node.turn == 1:
+        if self.turn == 1:
             board_with_best_move = None
             values_list = list(minimax_values_of_children.values())#all the minimax values of the children
             key_list = list(minimax_values_of_children.keys())#the children boards
@@ -32,7 +32,7 @@ class MinimaxPlayer:
             index = random.choice(indexes)#get the index of the maximum minimax value
             board_with_best_move = key_list[index]#get the board with the highest minimax values
 
-        elif current_board_node.turn == 2:
+        elif self.turn == 2:
             board_with_best_move = None
             values_list = list(minimax_values_of_children.values())
             key_list = list(minimax_values_of_children.keys())

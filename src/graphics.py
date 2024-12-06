@@ -167,7 +167,7 @@ def onMousePress(app, mouseX, mouseY):
                 app.inGame = True
                 app.newGame = Game(ManualPlayer(1), ManualPlayer(2))
     #need to implement castling here
-    #show legal moves for a piece  
+    #need to fix bugs with being in check
 
 def showLegalMoves(app):
     app.currentMoves = app.newGame.legalMoves[app.selectedPiece]

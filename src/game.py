@@ -6,7 +6,6 @@ from pawn import *
 from player import *
 from queen import *
 from rook import *
-from minimaxPlayer import *
 import copy
 
 
