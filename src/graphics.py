@@ -175,8 +175,13 @@ def showLegalMoves(app):
 def run(app):
     if app.computerPlays:
         if app.newGame.turn == 1:
-            x, y = app.newGame.chooseMove()
-            app.newGame.makeMove(x, y)
+                x, y = app.newGame.chooseMove()
+                if x == "L":
+                    app.newGame.gameOver = True
+                    app.newGame.winner = app.newGame.players[1]
+                else:
+                    app.newGame.makeMove(x, y)
+
 
 def updateBoard(app):
     for i in range(0, 8):

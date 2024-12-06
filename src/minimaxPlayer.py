@@ -8,6 +8,9 @@ class MinimaxPlayer:
         self.ply = ply
         self.turn = turn
         self.kingMoved = False
+    
+    def __repr__(self):
+        return "Computer"
 
     def chooseMove(self, board):
         tree = ChessTree(self.ply, board, self.turn)
@@ -23,6 +26,8 @@ class MinimaxPlayer:
         if self.turn == 1:
             board_with_best_move = None
             values_list = list(minimax_values_of_children.values())#all the minimax values of the children
+            if values_list == []:
+                return "L 1 2"
             key_list = list(minimax_values_of_children.keys())#the children boards
             max_value = max(values_list)#max minimax value
             indexes = []
@@ -35,6 +40,8 @@ class MinimaxPlayer:
         elif self.turn == 2:
             board_with_best_move = None
             values_list = list(minimax_values_of_children.values())
+            if values_list == []:
+                return "L 1 2"
             key_list = list(minimax_values_of_children.keys())
             min_value = min(values_list)
             indexes = []
@@ -58,3 +65,6 @@ class ManualPlayer:
     def chooseMove(self, board): 
         x = input("please input your move in form: piece row col")
         return x
+
+    def __repr__(self):
+        return "Player" + str(self.turn)
